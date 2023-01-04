@@ -3,10 +3,13 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"time"
 	"url-saver/app/scrapper"
 
 	"github.com/spf13/cobra"
 )
+
+var includeMeta bool
 
 var rootCmd = &cobra.Command{
 	Use:   "fetch",
@@ -14,9 +17,15 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
 			url := args[0]
-			err := scrapper.GetHtmlFromUrl(url)
+			metaData, err := scrapper.GetHtmlFromUrl(url, includeMeta)
 			if err != nil {
 				fmt.Println("error running command", err)
+			}
+			if metaData != nil {
+				fmt.Println("site", metaData.Site)
+				fmt.Println("num_links", metaData.NumLinks)
+				fmt.Println("images", metaData.Images)
+				fmt.Println("last_fetch", metaData.LastFetch.Format(time.RFC850))
 			}
 		} else {
 			fmt.Println("Please provide an url")
@@ -26,6 +35,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	rootCmd.Flags().BoolVarP(&includeMeta, "metadata", "m", false, "include metadata for webpage basic information")
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
