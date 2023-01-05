@@ -20,6 +20,7 @@ type MetaData struct {
 }
 
 func GetHtmlFromUrl(inputUrl string, includeMetadata bool) (*MetaData, error) {
+	inputUrl = util.AddHttpToUrlString(inputUrl)
 	url, err := url.Parse(inputUrl)
 	if err != nil {
 		fmt.Println("error parsing url", err)
@@ -44,6 +45,7 @@ func GetHtmlFromUrl(inputUrl string, includeMetadata bool) (*MetaData, error) {
 			fmt.Println("error parsing html", err)
 			return nil, err
 		}
+		metadata.Site = inputUrl
 		return metadata, nil
 	}
 	return nil, nil
@@ -51,7 +53,6 @@ func GetHtmlFromUrl(inputUrl string, includeMetadata bool) (*MetaData, error) {
 
 func GetHtml(url string) ([]byte, error) {
 	client := &http.Client{}
-	url = util.AddHttpToUrlString(url)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
