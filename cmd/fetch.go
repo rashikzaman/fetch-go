@@ -16,19 +16,21 @@ var rootCmd = &cobra.Command{
 	Short: "Fetch is a web page downloader",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
-			url := args[0]
-			metaData, err := scrapper.GetHtmlFromUrl(url, includeMeta)
-			if err != nil {
-				fmt.Println("error running command", err)
-			}
-			if metaData != nil {
-				fmt.Println("site", metaData.Site)
-				fmt.Println("num_links", metaData.NumLinks)
-				fmt.Println("images", metaData.Images)
-				fmt.Println("last_fetch", metaData.LastFetch.Format(time.RFC850))
+			for _, arg := range args {
+				url := arg
+				metaData, err := scrapper.GetHtmlFromUrl(url, includeMeta)
+				if err != nil {
+					fmt.Println("error running command", err)
+				}
+				if metaData != nil {
+					fmt.Println("site", metaData.Site)
+					fmt.Println("num_links", metaData.NumLinks)
+					fmt.Println("images", metaData.Images)
+					fmt.Println("last_fetch", metaData.LastFetch.Format(time.RFC850))
+				}
 			}
 		} else {
-			fmt.Println("Please provide an url")
+			fmt.Println("Please provide atleast one url")
 			return
 		}
 	},
