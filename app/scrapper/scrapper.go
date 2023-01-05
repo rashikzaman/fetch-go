@@ -2,11 +2,12 @@ package scrapper
 
 import (
 	"bytes"
+	"fetch/util"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
-	"url-saver/util"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -18,14 +19,19 @@ type MetaData struct {
 	LastFetch time.Time
 }
 
-func GetHtmlFromUrl(url string, includeMetadata bool) (*MetaData, error) {
-	htmlDataBody, err := GetHtml(url)
+func GetHtmlFromUrl(inputUrl string, includeMetadata bool) (*MetaData, error) {
+	url, err := url.Parse(inputUrl)
+	if err != nil {
+		fmt.Println("error parsing url", err)
+	}
+
+	htmlDataBody, err := GetHtml(inputUrl)
 	if err != nil {
 		fmt.Println("error getting html", err)
 		return nil, err
 	}
-	urlPath := fmt.Sprintf("./%s.html", url)
-	fmt.Println("size", len(htmlDataBody))
+
+	urlPath := fmt.Sprintf("./%s.html", url.Hostname())
 	err2 := util.StoreFile(urlPath, htmlDataBody)
 	if err2 != nil {
 		fmt.Println("error storing html", err2)

@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"fetch/app/scrapper"
 	"fmt"
 	"os"
 	"time"
-	"url-saver/app/scrapper"
 
 	"github.com/spf13/cobra"
 )

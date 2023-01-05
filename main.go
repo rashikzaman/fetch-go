@@ -1,6 +1,6 @@
 package main
 
-import "url-saver/cmd"
+import "fetch/cmd"
 
 func main() {
 	cmd.Execute()

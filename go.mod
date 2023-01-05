@@ -1,4 +1,4 @@
-module url-saver
+module fetch
 
 go 1.19
 
