@@ -1,20 +1,28 @@
 ## Description
 
-This is a command line application lets user to download webpages.
+This is a command line application that lets user to download webpages.
 
 
 It is build with `golang`.
 
 ## Installation
 
-### With Docker and docker-compose : 
-
-Build and run the containers with 
+Build the docker container:
 
 ```
-docker-compose up
+docker-compose build
 ```
 
 After successful container build, run the CLI application with:
 
-`docker-compose run fetch --metadata https://www.theguardian.com`
+`docker-compose run fetch https://www.theguardian.com`
+
+To Print metadata, run 
+
+`docker-compose run fetch https://www.theguardian.com --metadata`
+
+You can input multiple url like this:
+
+`docker-compose run fetch www.google.com https://www.theguardian.com --metadata`
+
+After successfully executing the command, web pages should be downloaded as html in the project root folder.
